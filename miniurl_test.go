@@ -31,3 +31,10 @@ func ExampleHash() {
 	// output:
 	// c7cf04b5508b043b25ed6f46da3945cc
 }
+
+func BenchmarkHash(b *testing.B) {
+	const input = "https://github.com/jpoikela/miniurl"
+	for n:=0; n<b.N; n++ {
+		miniurl.Hash(input)
+	}
+}
