@@ -24,11 +24,20 @@ func TestAPI_AddUrl(t *testing.T) {
 
 	// TODO: implement
 	r := httprouter.New()
-	api.Bind(r, nil)
+	h := &strHandler{str: "testvalue"}
+	api.Bind(r, h)
 	r.ServeHTTP(responseRecorder, req)
 
 	assert.Equal(t, expectedStatusCode, responseRecorder.Result().StatusCode)
 	body, err := io.ReadAll(responseRecorder.Result().Body)
 	require.NoError(t, err)
-	assert.Equal(t, expectedBody, string(body))
+	assert.JSONEq(t, expectedBody, string(body))
+}
+
+type strHandler struct {
+	str string
+}
+
+func (h *strHandler) AddUrl(url string) (hash  string, err error) {
+	return h.str, nil
 }
